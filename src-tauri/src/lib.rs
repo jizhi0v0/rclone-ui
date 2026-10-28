@@ -980,5 +980,9 @@ pub fn run() {
 
     #[cfg(target_os = "macos")]
     app.set_activation_policy(tauri::ActivationPolicy::Accessory);
-    app.run(|_app, _event| {})
+    app.run(|app, event| {
+        if let tauri::RunEvent::Exit = event {
+            zookeeper::kill_rclone_daemon_on_exit(app);
+        }
+    })
 }
